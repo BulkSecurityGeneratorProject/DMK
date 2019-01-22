@@ -30,6 +30,7 @@
         "otherModules": [],
         "enableTranslation": true,
         "nativeLanguage": "ru",
-        "languages": ["ru", "en"]
+        "languages": ["ru", "en"],
+        "enableHibernateCache": false
     }
 }
