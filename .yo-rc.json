@@ -1,0 +1,35 @@
+{
+    "generator-jhipster": {
+        "promptValues": {
+            "packageName": "com.dmk",
+            "nativeLanguage": "ru"
+        },
+        "jhipsterVersion": "5.7.2",
+        "applicationType": "monolith",
+        "baseName": "DMK",
+        "packageName": "com.dmk",
+        "packageFolder": "com/dmk",
+        "serverPort": "8080",
+        "authenticationType": "jwt",
+        "cacheProvider": "no",
+        "websocket": "spring-websocket",
+        "databaseType": "sql",
+        "devDatabaseType": "mysql",
+        "prodDatabaseType": "mysql",
+        "searchEngine": false,
+        "messageBroker": false,
+        "serviceDiscoveryType": false,
+        "buildTool": "maven",
+        "enableSwaggerCodegen": false,
+        "jwtSecretKey": "NDU1NTg4YjM3ZmFiYjEwZmJiYjM2OGYyYmNkNDI1N2U0MzZjYmM4ZjFjNGU2YWE0ZGM0YjIwODExZmM2MTQ5MzlmNTYxZTIwODFhNjY1MjBkZmMwNWNjYWNiOTI5NjNkZTUxZDUyN2UwNGIxM2RlM2ZiNzQ1OGY2OTdiNjQwZTQ=",
+        "clientFramework": "angularX",
+        "useSass": false,
+        "clientPackageManager": "npm",
+        "testFrameworks": ["protractor"],
+        "jhiPrefix": "jhi",
+        "otherModules": [],
+        "enableTranslation": true,
+        "nativeLanguage": "ru",
+        "languages": ["ru", "en"]
+    }
+}
