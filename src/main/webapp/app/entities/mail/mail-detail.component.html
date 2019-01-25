@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="mail">
+            <h2><span jhiTranslate="dmkApp.mail.detail.title">Mail</span> {{mail.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="dmkApp.mail.from">From</span></dt>
+                <dd>
+                    <span>{{mail.from}}</span>
+                </dd>
+                <dt><span jhiTranslate="dmkApp.mail.to">To</span></dt>
+                <dd>
+                    <span>{{mail.to}}</span>
+                </dd>
+                <dt><span jhiTranslate="dmkApp.mail.subject">Subject</span></dt>
+                <dd>
+                    <span>{{mail.subject}}</span>
+                </dd>
+                <dt><span jhiTranslate="dmkApp.mail.content">Content</span></dt>
+                <dd>
+                    <span>{{mail.content}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/mail', mail.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

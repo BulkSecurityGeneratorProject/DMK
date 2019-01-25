@@ -110,4 +110,5 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    removeErrorMailTaskTimeMl: 5400000

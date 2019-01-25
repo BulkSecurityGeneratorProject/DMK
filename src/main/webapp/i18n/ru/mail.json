@@ -1,0 +1,24 @@
+{
+    "dmkApp": {
+        "mail": {
+            "home": {
+                "title": "Mail",
+                "createLabel": "Создать новый Mail",
+                "createOrEditLabel": "Создать или отредактировать Mail"
+            },
+            "created": "Новый Mail создан с идентификатором {{ param }}",
+            "updated": "Mail обновлен с идентификатором {{ param }}",
+            "deleted": "Mail удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Mail {{ id }}?"
+            },
+            "detail": {
+                "title": "Mail"
+            },
+            "from": "From",
+            "to": "To",
+            "subject": "Subject",
+            "content": "Content"
+        }
+    }
+}
