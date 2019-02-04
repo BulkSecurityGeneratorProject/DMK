@@ -5,7 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 import * as moment from 'moment';
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { MailTaskService } from 'app/entities/mail-task/mail-task.service';
 import { IMailTask, MailTask } from 'app/shared/model/mail-task.model';
 
@@ -25,14 +25,15 @@ describe('Service Tests', () => {
             httpMock = injector.get(HttpTestingController);
             currentDate = moment();
 
-            elemDefault = new MailTask(0, 0, 'AAAAAAA', currentDate);
+            elemDefault = new MailTask(0, 0, 'AAAAAAA', currentDate, currentDate);
         });
 
         describe('Service methods', async () => {
             it('should find an element', async () => {
                 const returnedFromService = Object.assign(
                     {
-                        lastUpdate: currentDate.format(DATE_FORMAT)
+                        lastUpdate: currentDate.format(DATE_TIME_FORMAT),
+                        createdDate: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
@@ -49,13 +50,15 @@ describe('Service Tests', () => {
                 const returnedFromService = Object.assign(
                     {
                         id: 0,
-                        lastUpdate: currentDate.format(DATE_FORMAT)
+                        lastUpdate: currentDate.format(DATE_TIME_FORMAT),
+                        createdDate: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
                 const expected = Object.assign(
                     {
-                        lastUpdate: currentDate
+                        lastUpdate: currentDate,
+                        createdDate: currentDate
                     },
                     returnedFromService
                 );
@@ -72,14 +75,16 @@ describe('Service Tests', () => {
                     {
                         mailId: 1,
                         status: 'BBBBBB',
-                        lastUpdate: currentDate.format(DATE_FORMAT)
+                        lastUpdate: currentDate.format(DATE_TIME_FORMAT),
+                        createdDate: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
 
                 const expected = Object.assign(
                     {
-                        lastUpdate: currentDate
+                        lastUpdate: currentDate,
+                        createdDate: currentDate
                     },
                     returnedFromService
                 );
@@ -96,13 +101,15 @@ describe('Service Tests', () => {
                     {
                         mailId: 1,
                         status: 'BBBBBB',
-                        lastUpdate: currentDate.format(DATE_FORMAT)
+                        lastUpdate: currentDate.format(DATE_TIME_FORMAT),
+                        createdDate: currentDate.format(DATE_TIME_FORMAT)
                     },
                     elemDefault
                 );
                 const expected = Object.assign(
                     {
-                        lastUpdate: currentDate
+                        lastUpdate: currentDate,
+                        createdDate: currentDate
                     },
                     returnedFromService
                 );

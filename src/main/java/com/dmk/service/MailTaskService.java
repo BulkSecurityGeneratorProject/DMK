@@ -50,6 +50,19 @@ public class MailTaskService {
 
 
     /**
+     * Get mailTasks by status.
+     *
+     * @param status the status of entity
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<MailTask> findByStatus(String status) {
+        log.debug("Request to get MailTasks by status");
+        return mailTaskRepository.findByStatus(status);
+    }
+
+
+    /**
      * Get one mailTask by id.
      *
      * @param id the id of the entity

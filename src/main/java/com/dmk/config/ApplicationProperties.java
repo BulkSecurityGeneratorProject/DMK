@@ -11,13 +11,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
-    private String removeErrorMailTaskTimeMl;
+    private Long removeErrorMailTaskTimeMl;
 
-    public String getRemoveErrorMailTaskTimeMl() {
+    public Long getRemoveErrorMailTaskTimeMl() {
         return removeErrorMailTaskTimeMl;
     }
 
-    public void setRemoveErrorMailTaskTimeMl(String removeErrorMailTaskTimeMl) {
+    public void setRemoveErrorMailTaskTimeMl(Long removeErrorMailTaskTimeMl) {
         this.removeErrorMailTaskTimeMl = removeErrorMailTaskTimeMl;
     }
 }

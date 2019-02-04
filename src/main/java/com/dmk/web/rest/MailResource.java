@@ -61,12 +61,9 @@ public class MailResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
 
-
-        //todo
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             MailTask mailTask = new MailTask();
             mailTask.setMailId(mail.getId());
-            mailTask.setLastUpdate(Instant.now());
             mailTask.setStatus(Defaults.MailStatus.READY_TO_SEND);
 
             mailTaskResource.createMailTask(mailTask);

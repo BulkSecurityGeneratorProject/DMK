@@ -3,18 +3,18 @@ package com.dmk.domain;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * A MailTask.
  */
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "mail_task")
 public class MailTask implements Serializable {
 
@@ -34,15 +34,15 @@ public class MailTask implements Serializable {
     @LastModifiedDate
     private Instant lastUpdate;
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", updatable = false)
     @CreatedDate
     private Instant createdDate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -98,7 +98,6 @@ public class MailTask implements Serializable {
     public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -128,6 +127,7 @@ public class MailTask implements Serializable {
             ", mailId=" + getMailId() +
             ", status='" + getStatus() + "'" +
             ", lastUpdate='" + getLastUpdate() + "'" +
+            ", createdDate='" + getCreatedDate() + "'" +
             "}";
     }
 }

@@ -23,9 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Instant;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -33,6 +34,7 @@ import static com.dmk.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -47,11 +49,14 @@ public class MailTaskResourceIntTest {
     private static final Long DEFAULT_MAIL_ID = 1L;
     private static final Long UPDATED_MAIL_ID = 2L;
 
-    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
-    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+    private static final String DEFAULT_STATUS = "SENT";
+    private static final String UPDATED_STATUS = "READY_TO_SEND";
 
-    private static final Instant DEFAULT_LAST_UPDATE = Instant.EPOCH;
-    private static final Instant UPDATED_LAST_UPDATE = Instant.now();
+    private static final Instant DEFAULT_LAST_UPDATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_LAST_UPDATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_CREATED_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private MailTaskRepository mailTaskRepository;
@@ -71,8 +76,8 @@ public class MailTaskResourceIntTest {
     @Autowired
     private EntityManager em;
 
-//    @Autowired
-//    private Validator validator;
+    @Autowired
+    private Validator validator;
 
     private MockMvc restMailTaskMockMvc;
 
@@ -87,8 +92,7 @@ public class MailTaskResourceIntTest {
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter)
-//            .setValidator(validator)
-            .build();
+            .setValidator(validator).build();
     }
 
     /**
@@ -101,7 +105,8 @@ public class MailTaskResourceIntTest {
         MailTask mailTask = new MailTask()
             .mailId(DEFAULT_MAIL_ID)
             .status(DEFAULT_STATUS)
-            .lastUpdate(DEFAULT_LAST_UPDATE);
+            .lastUpdate(DEFAULT_LAST_UPDATE)
+            .createdDate(DEFAULT_CREATED_DATE);
         return mailTask;
     }
 
@@ -127,7 +132,8 @@ public class MailTaskResourceIntTest {
         MailTask testMailTask = mailTaskList.get(mailTaskList.size() - 1);
         assertThat(testMailTask.getMailId()).isEqualTo(DEFAULT_MAIL_ID);
         assertThat(testMailTask.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testMailTask.getLastUpdate()).isEqualTo(DEFAULT_LAST_UPDATE);
+//        assertThat(testMailTask.getLastUpdate()).isEqualTo(mailTask.getLastUpdate());
+        assertThat(testMailTask.getCreatedDate()).isEqualTo(testMailTask.getCreatedDate());
     }
 
     @Test
@@ -160,9 +166,11 @@ public class MailTaskResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(mailTask.getId().intValue())))
-            .andExpect(jsonPath("$.[*].mailId").value(hasItem(DEFAULT_MAIL_ID.intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].lastUpdate").value(hasItem(DEFAULT_LAST_UPDATE.toString())));
+            .andExpect(jsonPath("$.[*].mailId").value(hasItem(mailTask.getMailId().intValue())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(mailTask.getStatus())))
+            .andExpect(jsonPath("$.[*].lastUpdate").value(hasItem(mailTask.getLastUpdate().toString())))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(mailTask.getCreatedDate().toString())))
+            .andDo(print());
     }
     
     @Test
@@ -178,7 +186,27 @@ public class MailTaskResourceIntTest {
             .andExpect(jsonPath("$.id").value(mailTask.getId().intValue()))
             .andExpect(jsonPath("$.mailId").value(DEFAULT_MAIL_ID.intValue()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.lastUpdate").value(DEFAULT_LAST_UPDATE.toString()));
+            .andExpect(jsonPath("$.lastUpdate").value(mailTask.getLastUpdate().toString()))
+            .andExpect(jsonPath("$.createdDate").value(mailTask.getCreatedDate().toString()))
+            .andDo(print());
+    }
+    @Test
+    @Transactional
+    public void getMailTasksByStatus() throws Exception {
+        // Initialize the database
+        mailTaskRepository.saveAndFlush(mailTask);
+
+        // Get the mailTask
+        restMailTaskMockMvc.perform(get("/api/mail-tasks-status/{status}", mailTask.getStatus()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(mailTask.getId().intValue())))
+            .andExpect(jsonPath("$.[*].mailId").value(hasItem(mailTask.getMailId().intValue())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(mailTask.getStatus())))
+            .andExpect(jsonPath("$.[*].lastUpdate").value(hasItem(mailTask.getLastUpdate().toString())))
+            .andExpect(jsonPath("$.[*].createdDate").value(hasItem(mailTask.getCreatedDate().toString())))
+            .andDo(print());
+
     }
 
     @Test
@@ -204,7 +232,8 @@ public class MailTaskResourceIntTest {
         updatedMailTask
             .mailId(UPDATED_MAIL_ID)
             .status(UPDATED_STATUS)
-            .lastUpdate(UPDATED_LAST_UPDATE);
+            .lastUpdate(UPDATED_LAST_UPDATE)
+            .createdDate(UPDATED_CREATED_DATE);
 
         restMailTaskMockMvc.perform(put("/api/mail-tasks")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -217,7 +246,8 @@ public class MailTaskResourceIntTest {
         MailTask testMailTask = mailTaskList.get(mailTaskList.size() - 1);
         assertThat(testMailTask.getMailId()).isEqualTo(UPDATED_MAIL_ID);
         assertThat(testMailTask.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testMailTask.getLastUpdate()).isEqualTo(UPDATED_LAST_UPDATE);
+//        assertThat(testMailTask.getLastUpdate()).isEqualTo(testMailTask.getLastUpdate());
+        assertThat(testMailTask.getCreatedDate()).isEqualTo(UPDATED_CREATED_DATE);
     }
 
     @Test

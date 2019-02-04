@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -51,7 +51,8 @@ export class MailTaskService {
 
     protected convertDateFromClient(mailTask: IMailTask): IMailTask {
         const copy: IMailTask = Object.assign({}, mailTask, {
-            lastUpdate: mailTask.lastUpdate != null && mailTask.lastUpdate.isValid() ? mailTask.lastUpdate.format(DATE_FORMAT) : null
+            lastUpdate: mailTask.lastUpdate != null && mailTask.lastUpdate.isValid() ? mailTask.lastUpdate.format(DATE_TIME_FORMAT) : null,
+            createdDate: mailTask.createdDate != null && mailTask.createdDate.isValid() ? mailTask.createdDate.toJSON() : null
         });
         return copy;
     }
@@ -59,6 +60,7 @@ export class MailTaskService {
     protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
         if (res.body) {
             res.body.lastUpdate = res.body.lastUpdate != null ? moment(res.body.lastUpdate) : null;
+            res.body.createdDate = res.body.createdDate != null ? moment(res.body.createdDate) : null;
         }
         return res;
     }
@@ -67,6 +69,7 @@ export class MailTaskService {
         if (res.body) {
             res.body.forEach((mailTask: IMailTask) => {
                 mailTask.lastUpdate = mailTask.lastUpdate != null ? moment(mailTask.lastUpdate) : null;
+                mailTask.createdDate = mailTask.createdDate != null ? moment(mailTask.createdDate) : null;
             });
         }
         return res;

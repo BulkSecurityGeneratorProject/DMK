@@ -1,7 +1,6 @@
 package com.dmk.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.dmk.domain.Defaults;
 import com.dmk.domain.MailTask;
 import com.dmk.service.MailTaskService;
 import com.dmk.web.rest.errors.BadRequestAlertException;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +85,19 @@ public class MailTaskResource {
     public List<MailTask> getAllMailTasks() {
         log.debug("REST request to get all MailTasks");
         return mailTaskService.findAll();
+    }
+
+    /**
+     * GET  /mail-tasks/:status : get mailTasks by status.
+     *
+     * @param status the status of entity
+     * @return the ResponseEntity with status 200 (OK) and the list of mailTasks in body
+     */
+    @GetMapping("/mail-tasks-status/{status}")
+    @Timed
+    public List<MailTask> getAllMailTasks(@PathVariable String status) {
+        log.debug("REST request to get MailTasks by status");
+        return mailTaskService.findByStatus(status);
     }
 
     /**

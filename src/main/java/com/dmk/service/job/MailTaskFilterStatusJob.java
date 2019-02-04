@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import javax.mail.internet.MimeMessage;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -60,13 +62,10 @@ public class MailTaskFilterStatusJob {
                     if (sendEmail(mail.getTo(), mail.getSubject(), mail.getContent(),
                         false, true)) {
                         mailTask.setStatus(Defaults.MailStatus.SENT);
-//                        mailTask.setLastUpdate(Instant.now());
-                        mailTaskResource.updateMailTask(mailTask);
                     } else {
                         mailTask.setStatus(Defaults.MailStatus.ERROR);
-//                        mailTask.setLastUpdate(Instant.now());
-                        mailTaskResource.updateMailTask(mailTask);
                     }
+                    mailTaskResource.updateMailTask(mailTask);
                 }
             }
         }
@@ -75,13 +74,14 @@ public class MailTaskFilterStatusJob {
     @Scheduled(fixedRate = 60000)
     public void removeErrorMailTasks() {
         List<MailTask> mailTaskList = mailTaskRepository.findByStatus(Defaults.MailStatus.ERROR);
-        Long removeErrorMailTaskTime = Long.valueOf(applicationProperties.getRemoveErrorMailTaskTimeMl());
+        Long removeErrorMailTaskTimeMl = applicationProperties.getRemoveErrorMailTaskTimeMl();
+
         if (log.isDebugEnabled()) {
             log.debug(mailTaskList.toString());
         }
         if (mailTaskList != null && !mailTaskList.isEmpty()) {
             for (MailTask mailTask : mailTaskList) {
-                if (Instant.now().toEpochMilli() - mailTask.getCreatedDate().toEpochMilli() > removeErrorMailTaskTime) {
+                if (Instant.now().toEpochMilli() - mailTask.getCreatedDate().toEpochMilli() > removeErrorMailTaskTimeMl) {
                     mailTaskResource.deleteMailTask(mailTask.getId());
                 }
                 if (log.isDebugEnabled()) {

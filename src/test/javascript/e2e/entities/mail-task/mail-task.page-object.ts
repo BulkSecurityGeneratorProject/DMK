@@ -29,6 +29,7 @@ export class MailTaskUpdatePage {
     mailIdInput = element(by.id('field_mailId'));
     statusInput = element(by.id('field_status'));
     lastUpdateInput = element(by.id('field_lastUpdate'));
+    createdDateInput = element(by.id('field_createdDate'));
 
     async getPageTitle() {
         return this.pageTitle.getAttribute('jhiTranslate');
@@ -56,6 +57,14 @@ export class MailTaskUpdatePage {
 
     async getLastUpdateInput() {
         return this.lastUpdateInput.getAttribute('value');
+    }
+
+    async setCreatedDateInput(createdDate) {
+        await this.createdDateInput.sendKeys(createdDate);
+    }
+
+    async getCreatedDateInput() {
+        return this.createdDateInput.getAttribute('value');
     }
 
     async save() {

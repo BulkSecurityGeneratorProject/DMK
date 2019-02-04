@@ -1,5 +1,5 @@
 /* tslint:disable no-unused-expression */
-import { browser, ExpectedConditions as ec, promise } from 'protractor';
+import { browser, ExpectedConditions as ec, protractor, promise } from 'protractor';
 import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
 import { MailTaskComponentsPage, MailTaskDeleteDialog, MailTaskUpdatePage } from './mail-task.page-object';
@@ -41,11 +41,13 @@ describe('MailTask e2e test', () => {
         await promise.all([
             mailTaskUpdatePage.setMailIdInput('5'),
             mailTaskUpdatePage.setStatusInput('status'),
-            mailTaskUpdatePage.setLastUpdateInput('2000-12-31')
+            mailTaskUpdatePage.setLastUpdateInput('2000-12-31'),
+            mailTaskUpdatePage.setCreatedDateInput('01/01/2001' + protractor.Key.TAB + '02:30AM')
         ]);
         expect(await mailTaskUpdatePage.getMailIdInput()).to.eq('5');
         expect(await mailTaskUpdatePage.getStatusInput()).to.eq('status');
         expect(await mailTaskUpdatePage.getLastUpdateInput()).to.eq('2000-12-31');
+        expect(await mailTaskUpdatePage.getCreatedDateInput()).to.contain('2001-01-01T02:30');
         await mailTaskUpdatePage.save();
         expect(await mailTaskUpdatePage.getSaveButton().isPresent()).to.be.false;
 

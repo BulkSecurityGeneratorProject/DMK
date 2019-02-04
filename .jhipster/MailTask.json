@@ -13,11 +13,11 @@
         },
         {
             "fieldName": "lastUpdate",
-            "fieldType": "LocalDate"
+            "fieldType": "Instant"
         },
         {
             "fieldName": "createdDate",
-            "fieldType": "LocalDate"
+            "fieldType": "Instant"
         }
     ],
     "changelogDate": "20190124132125",

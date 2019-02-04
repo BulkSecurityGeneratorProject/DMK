@@ -30,12 +30,17 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="last_update" type="date">
+            <column name="last_update" type="datetime">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="created_date" type="datetime">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="mail_task" columnName="created_date" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

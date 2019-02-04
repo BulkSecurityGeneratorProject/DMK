@@ -43,7 +43,7 @@ spring:
     jpa:
         open-in-view: false
         properties:
-            hibernate.jdbc.time_zone: UTC
+            hibernate.jdbc.time_zone: EET
         hibernate:
             ddl-auto: none
             naming:
