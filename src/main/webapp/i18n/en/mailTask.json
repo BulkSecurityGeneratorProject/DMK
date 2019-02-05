@@ -1,0 +1,24 @@
+{
+    "dmkApp": {
+        "mailTask": {
+            "home": {
+                "title": "Mail Tasks",
+                "createLabel": "Create a new Mail Task",
+                "createOrEditLabel": "Create or edit a Mail Task"
+            },
+            "created": "A new Mail Task is created with identifier {{ param }}",
+            "updated": "A Mail Task is updated with identifier {{ param }}",
+            "deleted": "A Mail Task is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Mail Task {{ id }}?"
+            },
+            "detail": {
+                "title": "Mail Task"
+            },
+            "mailId": "Mail Id",
+            "status": "Status",
+            "lastUpdate": "Last Update",
+            "createdDate": "Created Date"
+        }
+    }
+}

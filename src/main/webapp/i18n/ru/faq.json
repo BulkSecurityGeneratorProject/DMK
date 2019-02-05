@@ -1,0 +1,21 @@
+{
+    "dmkApp": {
+        "faq": {
+            "home": {
+                "title": "Faqs",
+                "createLabel": "Создать новый Faq",
+                "createOrEditLabel": "Создать или отредактировать Faq"
+            },
+            "created": "Новый Faq создан с идентификатором {{ param }}",
+            "updated": "Faq обновлен с идентификатором {{ param }}",
+            "deleted": "Faq удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Faq {{ id }}?"
+            },
+            "detail": {
+                "title": "Faq"
+            },
+            "text": "Text"
+        }
+    }
+}

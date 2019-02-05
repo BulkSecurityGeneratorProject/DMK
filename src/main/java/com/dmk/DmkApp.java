@@ -1,6 +1,7 @@
 package com.dmk;
 
 import com.dmk.config.ApplicationProperties;
+import com.dmk.config.DatabaseConfiguration;
 import com.dmk.config.DefaultProfileUtil;
 
 import io.github.jhipster.config.JHipsterConstants;
@@ -9,10 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
